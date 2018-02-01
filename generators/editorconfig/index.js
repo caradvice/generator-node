@@ -1,4 +1,4 @@
-'use strict';
+
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
@@ -9,14 +9,14 @@ module.exports = class extends Generator {
       type: String,
       required: false,
       defaults: '',
-      desc: 'Relocate the location of the generated files.'
+      desc: 'Relocate the location of the generated files.',
     });
   }
 
   initializing() {
     this.fs.copy(
       this.templatePath('editorconfig'),
-      this.destinationPath(this.options.generateInto, '.editorconfig')
+      this.destinationPath(this.options.generateInto, '.editorconfig'),
     );
   }
 };

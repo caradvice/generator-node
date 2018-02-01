@@ -1,6 +1,5 @@
-'use strict';
-
 const _ = require('lodash');
+
 const extend = _.merge;
 const Generator = require('yeoman-generator');
 
@@ -10,14 +9,14 @@ module.exports = class extends Generator {
 
     this.option('ui', {
       desc: 'Choose your style of test DSL for Mocha (bdd, tdd)',
-      type: String
+      type: String,
     });
 
     this.option('testRoot', {
       type: String,
       required: false,
       default: 'test',
-      desc: 'Relative path to the test code root'
+      desc: 'Relative path to the test code root',
     });
   }
 
@@ -31,11 +30,11 @@ module.exports = class extends Generator {
         message: 'Choose your style of DSL',
         choices: ['BDD', 'TDD'],
         default: 'BDD',
-        when: !this.options.ui
-      }
+        when: !this.options.ui,
+      },
     ];
 
-    this.prompt(prompts).then(answers => {
+    this.prompt(prompts).then((answers) => {
       this.options.ui = (this.options.ui || answers.ui).toLowerCase();
       done();
     });
@@ -48,13 +47,13 @@ module.exports = class extends Generator {
   writing() {
     // Re-read the content at this point because a composed generator might modify it.
     const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-    const scripts = this.fs.readJSON(this.templatePath('package.json')).scripts;
+    const { scripts } = this.fs.readJSON(this.templatePath('package.json'));
 
     const pkg = extend(
       {
-        scripts
+        scripts,
       },
-      currentPkg
+      currentPkg,
     );
 
     // Let's extend package.json so we're not overwriting user previous fields
@@ -62,19 +61,19 @@ module.exports = class extends Generator {
 
     this.fs.copy(
       this.templatePath('spec-helper.ejs'),
-      this.destinationPath(`${this.options.testRoot}/spec-helper.js`)
+      this.destinationPath(`${this.options.testRoot}/spec-helper.js`),
     );
 
     this.fs.copy(
       this.templatePath('test.ejs'),
-      this.destinationPath(`${this.options.testRoot}/unit/index.spec.js`)
+      this.destinationPath(`${this.options.testRoot}/unit/index.spec.js`),
     );
   }
 
   install() {
     if (!this.options['skip-install']) {
       this.installDependencies({
-        bower: false
+        bower: false,
       });
     }
 
@@ -85,7 +84,7 @@ module.exports = class extends Generator {
       'sinon-chai',
       'proxyquire',
       'mocha',
-      'nyc'
+      'nyc',
     ];
 
     this.npmInstall(dependencies, { saveDev: true });

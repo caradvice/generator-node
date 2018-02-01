@@ -1,13 +1,11 @@
-'use strict';
+
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
 describe('node:cli', () => {
-  beforeEach(() => {
-    return helpers.run(require.resolve('../generators/cli')).on('ready', generator => {
-      generator.fs.write(generator.destinationPath('package.json'), '{"name": "my-lib"}');
-    });
-  });
+  beforeEach(() => helpers.run(require.resolve('../generators/cli')).on('ready', (generator) => {
+    generator.fs.write(generator.destinationPath('package.json'), '{"name": "my-lib"}');
+  }));
 
   it('creates cli.js', () => {
     assert.file('lib/cli.js');
@@ -21,23 +19,21 @@ describe('node:cli', () => {
     assert.fileContent('package.json', /"lec": "\^/);
     assert.fileContent(
       'package.json',
-      '"prepublishOnly": "lec lib/cli.js -c LF && nsp check"'
+      '"prepublishOnly": "lec lib/cli.js -c LF && nsp check"',
     );
   });
 });
 
 describe('node:cli', () => {
-  beforeEach(() => {
-    return helpers
-      .run(require.resolve('../generators/cli'))
-      .withOptions({ generateInto: 'other/' })
-      .on('ready', generator => {
-        generator.fs.write(
-          generator.destinationPath('other/package.json'),
-          '{"name": "my-lib"}'
-        );
-      });
-  });
+  beforeEach(() => helpers
+    .run(require.resolve('../generators/cli'))
+    .withOptions({ generateInto: 'other/' })
+    .on('ready', (generator) => {
+      generator.fs.write(
+        generator.destinationPath('other/package.json'),
+        '{"name": "my-lib"}',
+      );
+    }));
 
   it('creates cli.js with path option', () => {
     assert.file('other/lib/cli.js');

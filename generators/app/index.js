@@ -1,5 +1,6 @@
-'use strict';
+
 const _ = require('lodash');
+
 const extend = _.merge;
 const Generator = require('yeoman-generator');
 const parseAuthor = require('parse-author');
@@ -17,68 +18,68 @@ module.exports = class extends Generator {
       type: Boolean,
       required: false,
       default: false,
-      desc: 'Include travis config'
+      desc: 'Include travis config',
     });
 
     this.option('boilerplate', {
       type: Boolean,
       required: false,
       default: true,
-      desc: 'Include boilerplate files'
+      desc: 'Include boilerplate files',
     });
 
     this.option('cli', {
       type: Boolean,
       required: false,
       default: false,
-      desc: 'Add a CLI'
+      desc: 'Add a CLI',
     });
 
     this.option('coveralls', {
       type: Boolean,
       required: false,
       default: false,
-      desc: 'Include coveralls config'
+      desc: 'Include coveralls config',
     });
 
     this.option('editorconfig', {
       type: Boolean,
       required: false,
       default: true,
-      desc: 'Include a .editorconfig file'
+      desc: 'Include a .editorconfig file',
     });
 
     this.option('license', {
       type: Boolean,
       required: false,
       default: true,
-      desc: 'Include a license'
+      desc: 'Include a license',
     });
 
     this.option('name', {
       type: String,
       required: false,
-      desc: 'Project name'
+      desc: 'Project name',
     });
 
     this.option('githubAccount', {
       type: String,
       required: false,
       default: 'caradvice',
-      desc: 'GitHub username or organization'
+      desc: 'GitHub username or organization',
     });
 
     this.option('projectRoot', {
       type: String,
       required: false,
       default: 'src',
-      desc: 'Relative path to the project code root'
+      desc: 'Relative path to the project code root',
     });
 
     this.option('readme', {
       type: String,
       required: false,
-      desc: 'Content to insert in the README.md file'
+      desc: 'Content to insert in the README.md file',
     });
   }
 
@@ -90,7 +91,7 @@ module.exports = class extends Generator {
       name: this.pkg.name,
       description: this.pkg.description,
       version: this.pkg.version,
-      homepage: this.pkg.homepage
+      homepage: this.pkg.homepage,
     };
 
     if (_.isObject(this.pkg.author)) {
@@ -105,7 +106,7 @@ module.exports = class extends Generator {
     }
   }
 
-  _askForModuleName() {
+  askForModuleName() {
     if (this.pkg.name || this.options.name) {
       this.props.name = this.pkg.name || _.kebabCase(this.options.name);
       return Promise.resolve();
@@ -119,45 +120,45 @@ module.exports = class extends Generator {
         filter: _.kebabCase,
         validate(str) {
           return str.length > 0;
-        }
+        },
       },
-      this
-    ).then(answer => {
+      this,
+    ).then((answer) => {
       this.props.name = answer.name;
     });
   }
 
-  _askFor() {
+  askFor() {
     const prompts = [
       {
         name: 'description',
         message: 'Description',
-        when: !this.props.description
+        when: !this.props.description,
       },
       {
         name: 'homepage',
         message: 'Project homepage url',
-        when: !this.props.homepage
+        when: !this.props.homepage,
       },
       {
         name: 'authorName',
         message: "Author's Name",
         when: !this.props.authorName,
         default: this.user.git.name(),
-        store: true
+        store: true,
       },
       {
         name: 'authorEmail',
         message: "Author's Email",
         when: !this.props.authorEmail,
         default: this.user.git.email(),
-        store: true
+        store: true,
       },
       {
         name: 'authorUrl',
         message: "Author's Homepage",
         when: !this.props.authorUrl,
-        store: true
+        store: true,
       },
       {
         name: 'keywords',
@@ -165,22 +166,22 @@ module.exports = class extends Generator {
         when: !this.pkg.keywords,
         filter(words) {
           return words.split(/\s*,\s*/g);
-        }
+        },
       },
       {
         name: 'includeCoveralls',
         type: 'confirm',
         message: 'Send coverage reports to coveralls',
-        when: this.options.coveralls === undefined
-      }
+        when: this.options.coveralls === undefined,
+      },
     ];
 
-    return this.prompt(prompts).then(props => {
+    return this.prompt(prompts).then((props) => {
       this.props = extend(this.props, props);
     });
   }
 
-  _askForGithubAccount() {
+  askForGithubAccount() {
     if (this.options.githubAccount) {
       this.props.githubAccount = this.options.githubAccount;
       return Promise.resolve();
@@ -188,21 +189,19 @@ module.exports = class extends Generator {
 
     return githubUsername(this.props.authorEmail)
       .then(username => username, () => '')
-      .then(username => {
-        return this.prompt({
-          name: 'githubAccount',
-          message: 'GitHub username or organization',
-          default: username
-        }).then(prompt => {
-          this.props.githubAccount = prompt.githubAccount;
-        });
-      });
+      .then(username => this.prompt({
+        name: 'githubAccount',
+        message: 'GitHub username or organization',
+        default: username,
+      }).then((prompt) => {
+        this.props.githubAccount = prompt.githubAccount;
+      }));
   }
 
   prompting() {
-    return this._askForModuleName()
-      .then(this._askFor.bind(this))
-      .then(this._askForGithubAccount.bind(this));
+    return this.askForModuleName()
+      .then(this.askFor.bind(this))
+      .then(this.askForGithubAccount.bind(this));
   }
 
   writing() {
@@ -218,17 +217,17 @@ module.exports = class extends Generator {
         author: {
           name: this.props.authorName,
           email: this.props.authorEmail,
-          url: this.props.authorUrl
+          url: this.props.authorUrl,
         },
         files: [this.options.projectRoot],
         main: path.join(this.options.projectRoot, 'index.js').replace(/\\/g, '/'),
         keywords: [],
         devDependencies: {},
         engines: {
-          npm: '>= 4.0.0'
-        }
+          npm: '>= 4.0.0',
+        },
       },
-      currentPkg
+      currentPkg,
     );
 
     if (this.props.includeCoveralls) {
@@ -246,7 +245,7 @@ module.exports = class extends Generator {
 
   default() {
     if (this.options.travis) {
-      let options = { config: {} };
+      const options = { config: {} };
       if (this.props.includeCoveralls) {
         options.config.after_script = 'cat ./coverage/lcov.info | coveralls'; // eslint-disable-line camelcase
       }
@@ -262,16 +261,16 @@ module.exports = class extends Generator {
 
     this.composeWith(require.resolve('../git'), {
       name: this.props.name,
-      githubAccount: this.props.githubAccount
+      githubAccount: this.props.githubAccount,
     });
 
     this.composeWith(require.resolve('../testing'), {
-      ui: 'BDD'
+      ui: 'BDD',
     });
 
     if (this.options.boilerplate) {
       this.composeWith(require.resolve('../boilerplate'), {
-        name: this.props.name
+        name: this.props.name,
       });
     }
 
@@ -284,7 +283,7 @@ module.exports = class extends Generator {
         name: this.props.authorName,
         email: this.props.authorEmail,
         website: this.props.authorUrl,
-        license: 'nolicense'
+        license: 'nolicense',
       });
     }
 
@@ -296,7 +295,7 @@ module.exports = class extends Generator {
         authorName: this.props.authorName,
         authorUrl: this.props.authorUrl,
         coveralls: this.props.includeCoveralls,
-        content: this.options.readme
+        content: this.options.readme,
       });
     }
   }
@@ -309,14 +308,12 @@ module.exports = class extends Generator {
     this.log('Thanks for using Yeoman.');
 
     if (this.options.travis) {
-      let travisUrl = chalk.cyan(
-        `https://travis-ci.org/profile/${this.props.githubAccount || ''}`
-      );
+      const travisUrl = chalk.cyan(`https://travis-ci.org/profile/${this.props.githubAccount || ''}`);
       this.log(`- Enable Travis integration at ${travisUrl}`);
     }
 
     if (this.props.includeCoveralls) {
-      let coverallsUrl = chalk.cyan('https://coveralls.io/repos/new');
+      const coverallsUrl = chalk.cyan('https://coveralls.io/repos/new');
       this.log(`- Enable Coveralls integration at ${coverallsUrl}`);
     }
   }

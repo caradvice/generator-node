@@ -1,4 +1,4 @@
-'use strict';
+
 const _ = require('lodash');
 const Generator = require('yeoman-generator');
 
@@ -10,56 +10,56 @@ module.exports = class extends Generator {
       type: String,
       required: false,
       defaults: '',
-      desc: 'Relocate the location of the generated files.'
+      desc: 'Relocate the location of the generated files.',
     });
 
     this.option('name', {
       type: String,
       required: true,
-      desc: 'Project name'
+      desc: 'Project name',
     });
 
     this.option('description', {
       type: String,
       required: true,
-      desc: 'Project description'
+      desc: 'Project description',
     });
 
     this.option('githubAccount', {
       type: String,
       required: true,
-      desc: 'User github account'
+      desc: 'User github account',
     });
 
     this.option('authorName', {
       type: String,
       required: true,
-      desc: 'Author name'
+      desc: 'Author name',
     });
 
     this.option('authorUrl', {
       type: String,
       required: true,
-      desc: 'Author url'
+      desc: 'Author url',
     });
 
     this.option('coveralls', {
       type: Boolean,
       required: true,
-      desc: 'Include coveralls badge'
+      desc: 'Include coveralls badge',
     });
 
     this.option('content', {
       type: String,
       required: false,
-      desc: 'Readme content'
+      desc: 'Readme content',
     });
   }
 
   writing() {
     const pkg = this.fs.readJSON(
       this.destinationPath(this.options.generateInto, 'package.json'),
-      {}
+      {},
     );
     this.fs.copyTpl(
       this.templatePath('README.md'),
@@ -71,12 +71,12 @@ module.exports = class extends Generator {
         githubAccount: this.options.githubAccount,
         author: {
           name: this.options.authorName,
-          url: this.options.authorUrl
+          url: this.options.authorUrl,
         },
         license: pkg.license,
         includeCoveralls: this.options.coveralls,
-        content: this.options.content
-      }
+        content: this.options.content,
+      },
     );
   }
 };

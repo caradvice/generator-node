@@ -1,13 +1,11 @@
-'use strict';
+
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
 describe('node:boilerplate', () => {
-  beforeEach(() => {
-    return helpers
-      .run(require.resolve('../generators/boilerplate'))
-      .withOptions({ name: 'my-module' });
-  });
+  beforeEach(() => helpers
+    .run(require.resolve('../generators/boilerplate'))
+    .withOptions({ name: 'my-module' }));
 
   it('creates boilerplate files', () => {
     assert.file('src/index.js');
@@ -16,11 +14,9 @@ describe('node:boilerplate', () => {
 });
 
 describe('node:boilerplate', () => {
-  beforeEach(() => {
-    return helpers
-      .run(require.resolve('../generators/boilerplate'))
-      .withOptions({ name: 'my-module', generateInto: 'other/' });
-  });
+  beforeEach(() => helpers
+    .run(require.resolve('../generators/boilerplate'))
+    .withOptions({ name: 'my-module', generateInto: 'other/' }));
 
   it('creates boilerplate files using another path', () => {
     assert.file('other/src/index.js');

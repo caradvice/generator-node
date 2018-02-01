@@ -1,5 +1,6 @@
-'use strict';
+
 const _ = require('lodash');
+
 const extend = _.merge;
 const Generator = require('yeoman-generator');
 
@@ -11,32 +12,32 @@ module.exports = class extends Generator {
       type: String,
       required: false,
       defaults: '',
-      desc: 'Relocate the location of the generated files.'
+      desc: 'Relocate the location of the generated files.',
     });
   }
 
   writing() {
     const pkg = this.fs.readJSON(
       this.destinationPath(this.options.generateInto, 'package.json'),
-      {}
+      {},
     );
 
     extend(pkg, {
       bin: 'lib/cli.js',
       dependencies: {
-        meow: '^3.7.0'
+        meow: '^3.7.0',
       },
       devDependencies: {
-        lec: '^1.0.1'
+        lec: '^1.0.1',
       },
       scripts: {
-        prepublishOnly: 'lec lib/cli.js -c LF && nsp check'
-      }
+        prepublishOnly: 'lec lib/cli.js -c LF && nsp check',
+      },
     });
 
     this.fs.writeJSON(
       this.destinationPath(this.options.generateInto, 'package.json'),
-      pkg
+      pkg,
     );
 
     this.fs.copyTpl(
@@ -44,8 +45,8 @@ module.exports = class extends Generator {
       this.destinationPath(this.options.generateInto, 'lib/cli.js'),
       {
         pkgName: pkg.name,
-        pkgSafeName: _.camelCase(pkg.name)
-      }
+        pkgSafeName: _.camelCase(pkg.name),
+      },
     );
   }
 };

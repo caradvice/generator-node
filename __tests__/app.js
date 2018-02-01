@@ -1,22 +1,15 @@
-'use strict';
+/* eslint-disable global-require */
+/* global jest */
+
 const _ = require('lodash');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
 describe('node:app', () => {
   beforeEach(() => {
-    jest.mock('npm-name', () => {
-      return () => Promise.resolve(true);
-    });
-
-    jest.mock('github-username', () => {
-      return () => Promise.resolve('unicornUser');
-    });
-
-    jest.mock('generator-license/app', () => {
-      const helpers = require('yeoman-test');
-      return helpers.createDummyGenerator();
-    });
+    jest.mock('npm-name', () => () => Promise.resolve(true));
+    jest.mock('github-username', () => () => Promise.resolve('unicornUser'));
+    jest.mock('generator-license/app', () => require('yeoman-test').createDummyGenerator());
   });
 
   describe('running on new project', () => {
@@ -30,7 +23,7 @@ describe('node:app', () => {
         authorEmail: 'hi@yeoman.io',
         authorUrl: 'http://yeoman.io',
         keywords: ['foo', 'bar'],
-        includeCoveralls: true
+        includeCoveralls: true,
       };
       return helpers
         .run(require.resolve('../generators/app'))
@@ -41,7 +34,7 @@ describe('node:app', () => {
             '.gitignore',
             '.gitattributes',
             'README.md',
-            'src/index.js'
+            'src/index.js',
           ]);
 
           assert.file('package.json');
@@ -54,11 +47,11 @@ describe('node:app', () => {
             author: {
               name: answers.authorName,
               email: answers.authorEmail,
-              url: answers.authorUrl
+              url: answers.authorUrl,
             },
             files: ['src'],
             keywords: answers.keywords,
-            main: 'src/index.js'
+            main: 'src/index.js',
           });
 
           assert.file('README.md');
@@ -78,12 +71,12 @@ describe('node:app', () => {
         repository: 'caradvice/generator-node',
         author: 'The Yeoman Team',
         files: ['src'],
-        keywords: ['bar']
+        keywords: ['bar'],
       };
       return helpers
         .run(require.resolve('../generators/app'))
         .withPrompts({ name: 'generator-node' })
-        .on('ready', gen => {
+        .on('ready', (gen) => {
           gen.fs.writeJSON(gen.destinationPath('package.json'), pkg);
           gen.fs.write(gen.destinationPath('README.md'), 'foo');
         })
@@ -96,34 +89,28 @@ describe('node:app', () => {
   });
 
   describe('--no-travis', () => {
-    it('skip .travis.yml', () => {
-      return helpers
-        .run(require.resolve('../generators/app'))
-        .withOptions({ travis: false })
-        .then(() => assert.noFile('.travis.yml'));
-    });
+    it('skip .travis.yml', () => helpers
+      .run(require.resolve('../generators/app'))
+      .withOptions({ travis: false })
+      .then(() => assert.noFile('.travis.yml')));
   });
 
   describe('--projectRoot', () => {
-    it('include the raw files', () => {
-      return helpers
-        .run(require.resolve('../generators/app'))
-        .withOptions({ projectRoot: 'generators' })
-        .then(() => {
-          assert.jsonFileContent('package.json', {
-            files: ['generators'],
-            main: 'generators/index.js'
-          });
+    it('include the raw files', () => helpers
+      .run(require.resolve('../generators/app'))
+      .withOptions({ projectRoot: 'generators' })
+      .then(() => {
+        assert.jsonFileContent('package.json', {
+          files: ['generators'],
+          main: 'generators/index.js',
         });
-    });
+      }));
   });
 
   describe('--no-editorconfig', () => {
-    it('include the raw files', () => {
-      return helpers
-        .run(require.resolve('../generators/app'))
-        .withOptions({ editorconfig: false })
-        .then(() => assert.noFile('.editorconfig'));
-    });
+    it('include the raw files', () => helpers
+      .run(require.resolve('../generators/app'))
+      .withOptions({ editorconfig: false })
+      .then(() => assert.noFile('.editorconfig')));
   });
 });

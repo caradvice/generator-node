@@ -1,4 +1,4 @@
-'use strict';
+
 
 module.exports = {
   app: require.resolve('./generators/app'),
@@ -8,5 +8,5 @@ module.exports = {
   eslint: require.resolve('./generators/eslint'),
   git: require.resolve('./generators/git'),
   nsp: require.resolve('./generators/nsp'),
-  readme: require.resolve('./generators/readme')
+  readme: require.resolve('./generators/readme'),
 };

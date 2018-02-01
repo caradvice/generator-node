@@ -1,4 +1,4 @@
-'use strict';
+
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
@@ -9,13 +9,13 @@ module.exports = class extends Generator {
       type: String,
       required: false,
       default: '',
-      desc: 'Relocate the location of the generated files.'
+      desc: 'Relocate the location of the generated files.',
     });
 
     this.option('name', {
       type: String,
       required: true,
-      desc: 'The new module name.'
+      desc: 'The new module name.',
     });
   }
 

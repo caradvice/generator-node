@@ -1,11 +1,11 @@
-'use strict';
+
 const path = require('path');
 const helpers = require('yeoman-test');
 const assert = require('yeoman-assert');
 
 describe('mocha:app', () => {
   describe('defaults', () => {
-    beforeEach(done => {
+    beforeEach((done) => {
       helpers.run(path.join(__dirname, '../generators/testing')).on('end', done);
     });
 

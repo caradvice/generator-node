@@ -4,7 +4,7 @@ const helpers = require('yeoman-test');
 describe('node:eslint', () => {
   it('fill package.json', () =>
     helpers.run(require.resolve('../generators/eslint')).then(() => {
-      assert.fileContent('package.json', /"eslint-config-xo":/);
+      assert.fileContent('package.json', /"eslint-config-airbnb":/);
       assert.jsonFileContent('package.json', {
         eslintConfig: {
           extends: ['airbnb'],
@@ -24,7 +24,7 @@ describe('node:eslint', () => {
       .run(require.resolve('../generators/eslint'))
       .withOptions({ generateInto: 'other/' })
       .then(() => {
-        assert.fileContent('other/package.json', /"eslint-config-xo":/);
+        assert.fileContent('other/package.json', /"eslint-config-airbnb":/);
         assert.jsonFileContent('other/package.json', {
           eslintConfig: {
             extends: ['airbnb'],
