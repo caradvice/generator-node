@@ -16,17 +16,28 @@ module.exports = class extends Generator {
 
   writing() {
     const pkgJson = {
-      devDependencies: {
-        eslint: rootPkg.devDependencies.eslint,
-        prettier: rootPkg.devDependencies.prettier,
-        husky: rootPkg.devDependencies.husky,
-        'lint-staged': rootPkg.devDependencies['lint-staged'],
-        'eslint-config-prettier': rootPkg.devDependencies['eslint-config-prettier'],
-        'eslint-plugin-prettier': rootPkg.devDependencies['eslint-plugin-prettier'],
-        'eslint-config-xo': rootPkg.devDependencies['eslint-config-xo']
-      },
       'lint-staged': rootPkg['lint-staged'],
-      eslintConfig: rootPkg.eslintConfig,
+      eslintConfig: {
+        extends: ['airbnb'],
+        env: {
+          mocha: true,
+          node: true
+        },
+        rules: {
+          'arrow-body-style': 'off',
+          'arrow-parens': ['error', 'always'],
+          'comma-dangle': 'off',
+          'func-names': 'off',
+          'global-require': 'off',
+          'max-len': ['error', 120],
+          'no-console': 'off',
+          'no-underscore-dangle': 'off',
+          'no-use-before-define': 'off',
+          semi: ['error', 'never'],
+          'space-before-function-paren': ['error', 'never'],
+          'import/no-extraneous-dependencies': 'off'
+        }
+      },
       scripts: {
         pretest: rootPkg.scripts.pretest,
         precommit: rootPkg.scripts.precommit
@@ -42,5 +53,19 @@ module.exports = class extends Generator {
       this.templatePath('eslintignore'),
       this.destinationPath(this.options.generateInto, '.eslintignore')
     );
+  }
+
+  install() {
+    const dependencies = [
+      'eslint',
+      'husky',
+      'lint-staged',
+      'eslint-config-airbnb',
+      'eslint-plugin-import',
+      'eslint-plugin-jsx-a11y',
+      'eslint-plugin-react'
+    ];
+
+    this.npmInstall(dependencies, { saveDev: true });
   }
 };

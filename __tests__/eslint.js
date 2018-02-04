@@ -5,12 +5,12 @@ const helpers = require('yeoman-test');
 describe('node:eslint', () => {
   it('fill package.json', () => {
     return helpers.run(require.resolve('../generators/eslint')).then(() => {
-      assert.fileContent('package.json', /"eslint-config-xo":/);
       assert.jsonFileContent('package.json', {
         eslintConfig: {
-          extends: ['xo', 'prettier'],
+          extends: ['airbnb'],
           env: {
-            jest: true
+            mocha: true,
+            node: true
           }
         },
         scripts: {
@@ -26,10 +26,9 @@ describe('node:eslint', () => {
       .run(require.resolve('../generators/eslint'))
       .withOptions({ generateInto: 'other/' })
       .then(() => {
-        assert.fileContent('other/package.json', /"eslint-config-xo":/);
         assert.jsonFileContent('other/package.json', {
           eslintConfig: {
-            extends: ['xo', 'prettier']
+            extends: ['airbnb']
           }
         });
         assert.file('other/.eslintignore');
