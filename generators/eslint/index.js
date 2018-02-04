@@ -23,7 +23,20 @@ module.exports = class extends Generator {
           mocha: true,
           node: true
         },
-        rules: {}
+        rules: {
+          'arrow-body-style': 'off',
+          'arrow-parens': ['error', 'always'],
+          'comma-dangle': 'off',
+          'func-names': 'off',
+          'global-require': 'off',
+          'max-len': ['error', 120],
+          'no-console': 'off',
+          'no-underscore-dangle': 'off',
+          'no-use-before-define': 'off',
+          semi: ['error', 'never'],
+          'space-before-function-paren': ['error', 'never'],
+          'import/no-extraneous-dependencies': 'off'
+        }
       },
       scripts: {
         pretest: rootPkg.scripts.pretest,
