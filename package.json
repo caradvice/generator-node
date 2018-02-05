@@ -22,7 +22,7 @@
     "yeoman-assert": "^3.1.0",
     "yeoman-test": "^1.5.1"
   },
-  "repository": "yeoman/generator-node",
+  "repository": "git@github.com:caradvice/generator-node",
   "scripts": {
     "pretest": "eslint .",
     "test": "jest",
