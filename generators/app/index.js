@@ -20,6 +20,13 @@ module.exports = class extends Generator {
       desc: 'Include travis config'
     });
 
+    this.option('buildkite', {
+      type: Boolean,
+      required: false,
+      default: true,
+      desc: 'Include buildkite files'
+    });
+
     this.option('boilerplate', {
       type: Boolean,
       required: false,
@@ -271,6 +278,12 @@ module.exports = class extends Generator {
 
     if (this.options.boilerplate) {
       this.composeWith(require.resolve('../boilerplate'), {
+        name: this.props.name
+      });
+    }
+
+    if (this.options.buildkite) {
+      this.composeWith(require.resolve('../buildkite'), {
         name: this.props.name
       });
     }
