@@ -1,0 +1,19 @@
+steps:
+  - command:
+      - npm install
+      - npm test
+    label: Run tests
+    agents:
+      - Env=dev
+
+  - wait: ~
+    branches: master
+
+  - command:
+      - npm install
+      - npm version 0.0.$BUILDKITE_BUILD_NUMBER
+      - npm publish
+    label: Publish package
+    agents:
+      - Env=dev
+    branches: master
